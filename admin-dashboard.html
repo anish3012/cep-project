@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Smart Canteen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --secondary: #f97316;
+            --accent: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --white: #ffffff;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --gradient: linear-gradient(135deg, var(--primary), var(--accent));
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--white);
+            color: var(--dark);
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+            color: var(--primary);
+            animation: pulse 2s infinite;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+        
+        nav a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: -1;
+        }
+        
+        .btn:hover::before {
+            transform: translateX(0);
+        }
+        
+        .btn-primary {
+            background: var(--gradient);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(79, 70, 229, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary), #ea580c);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(249, 115, 22, 0.4);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+        
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+        
+        /* Admin Header */
+        .admin-header {
+            padding: 2rem 0;
+            background: var(--gradient);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .admin-header::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 1;
+        }
+        
+        .admin-header::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 1;
+        }
+        
+        .admin-header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .admin-title h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .admin-title p {
+            opacity: 0.9;
+        }
+        
+        .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .admin-user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        
+        .admin-user-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+        }
+        
+        .admin-user-info p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Dashboard Section */
+        .dashboard-section {
+            padding: 3rem 0;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background-color: var(--white);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--gradient);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover::before {
+            transform: scaleY(1);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .stat-icon.primary {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(139, 92, 246, 0.1));
+            color: var(--primary);
+        }
+        
+        .stat-icon.success {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+            color: var(--success);
+        }
+        
+        .stat-icon.warning {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.1));
+            color: var(--warning);
+        }
+        
+        .stat-icon.danger {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
+            color: var(--danger);
+        }
+        
+        .stat-info h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+        
+        .stat-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .dashboard-tabs {
+            background-color: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        .tabs-header {
+            display: flex;
+            border-bottom: 1px solid var(--light-gray);
+            overflow-x: auto;
+        }
+        
+        .tab-btn {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            white-space: nowrap;
+        }
+        
+        .tab-btn.active {
+            color: var(--primary);
+        }
+        
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gradient);
+        }
+        
+        .tab-content {
+            padding: 1.5rem;
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        th {
+            background-color: var(--light);
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        tr:hover {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+        
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-edit {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+        
+        .btn-delete {
+            background-color: var(--danger);
+            color: var(--white);
+        }
+        
+        /* Form Styles */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        /* Analytics Styles */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .analytics-card {
+            background-color: var(--white);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .analytics-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .analytics-card h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+        
+        .popular-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .popular-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            background-color: var(--light);
+            border-radius: 8px;
+        }
+        
+        .popular-item-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .popular-item-rank {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--gradient);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        .popular-item-name {
+            font-weight: 500;
+        }
+        
+        .popular-item-count {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .peak-hours {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .peak-hour {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .peak-hour-time {
+            width: 80px;
+            font-weight: 500;
+        }
+        
+        .peak-hour-bar {
+            flex: 1;
+            height: 20px;
+            background-color: var(--light);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .peak-hour-fill {
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 10px;
+            animation: growBar 1.5s ease;
+        }
+        
+        .peak-hour-count {
+            width: 40px;
+            text-align: right;
+            font-weight: 500;
+            color: var(--primary);
+        }
+        
+        .chart-container {
+            background-color: var(--white);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-top: 1.5rem;
+        }
+        
+        .chart-container h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .chart-container h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+        
+        .chart {
+            height: 300px;
+            display: flex;
+            align-items: flex-end;
+            gap: 15px;
+            padding: 20px 0;
+        }
+        
+        .chart-bar {
+            flex: 1;
+            background: var(--gradient);
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s ease;
+            position: relative;
+            animation: growBar 1.5s ease;
+        }
+        
+        .chart-bar:hover {
+            transform: translateY(-10px);
+        }
+        
+        .chart-labels {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            margin-top: 10px;
+        }
+        
+        .chart-label {
+            text-align: center;
+            font-weight: 500;
+            color: var(--gray);
+        }
+        
+        /* Footer Styles */
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 4rem 0 2rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+        }
+        
+        .footer-column p {
+            color: #cbd5e1;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-column ul li a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes growBar {
+            from {
+                height: 0;
+            }
+            to {
+                height: var(--bar-height);
+            }
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .admin-header-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav {
+                width: 100%;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                width: 100%;
+                gap: 10px;
+                display: none;
+            }
+            
+            nav ul.active {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                top: 20px;
+                right: 20px;
+            }
+            
+            .user-actions {
+                width: 100%;
+                justify-content: center;
+                margin-top: 1rem;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-utensils"></i>
+                <h1>Smart Canteen</h1>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="menu.html">Menu</a></li>
+                    <li><a href="preorder.html">Pre-Order</a></li>
+                    <li><a href="status.html">Order Status</a></li>
+                    <li><a href="admin-login.html">Admin</a></li>
+                </ul>
+            </nav>
+            
+            <div class="user-actions">
+                <a href="admin-login.html" class="btn btn-outline">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Admin Header -->
+    <div class="admin-header">
+        <div class="container">
+            <div class="admin-header-content">
+                <div class="admin-title">
+                    <h1>Admin Dashboard</h1>
+                    <p>Manage canteen operations efficiently</p>
+                </div>
+                
+                <div class="admin-user">
+                    <div class="admin-user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="admin-user-info">
+                        <h3>Admin User</h3>
+                        <p>admin@trinitycollege.edu</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <section class="dashboard-section">
+        <div class="container">
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <div class="stat-icon primary">
+                        <i class="fas fa-receipt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>24</h3>
+                        <p>Orders Today</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon success">
+                        <i class="fas fa-rupee-sign"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>₹8,450</h3>
+                        <p>Revenue Today</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>5</h3>
+                        <p>Low Stock Items</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon danger">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>12 min</h3>
+                        <p>Avg. Prep Time</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-tabs">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="orders">Order Management</button>
+                    <button class="tab-btn" data-tab="menu">Menu Management</button>
+                    <button class="tab-btn" data-tab="stock">Stock Management</button>
+                    <button class="tab-btn" data-tab="analytics">Analytics</button>
+                </div>
+                
+                <!-- Order Management Tab -->
+                <div class="tab-content active" id="orders-tab">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ORD001</td>
+                                    <td>Rahul Sharma</td>
+                                    <td>2</td>
+                                    <td>₹80</td>
+                                    <td><span class="badge" style="background-color: rgba(79, 70, 229, 0.1); color: var(--primary); padding: 4px 12px; border-radius: 20px; font-weight: 500;">Preparing</span></td>
+                                    <td>
+                                        <div class="action-btns">
+                                            <button class="btn btn-primary btn-sm">View</button>
+                                            <button class="btn btn-secondary btn-sm">Update</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ORD002</td>
+                                    <td>Priya Patel</td>
+                                    <td>1</td>
+                                    <td>₹80</td>
+                                    <td><span class="badge" style="background-color: rgba(16, 185, 129, 0.1); color: var(--success); padding: 4px 12px; border-radius: 20px; font-weight: 500;">Ready</span></td>
+                                    <td>
+                                        <div class="action-btns">
+                                            <button class="btn btn-primary btn-sm">View</button>
+                                            <button class="btn btn-secondary btn-sm">Update</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ORD003</td>
+                                    <td>Amit Singh</td>
+                                    <td>2</td>
+                                    <td>₹90</td>
+                                    <td><span class="badge" style="background-color: rgba(245, 158, 11, 0.1); color: var(--warning); padding: 4px 12px; border-radius: 20px; font-weight: 500;">Pending</span></td>
+                                    <td>
+                                        <div class="action-btns">
+                                            <button class="btn btn-primary btn-sm">View</button>
+                                            <button class="btn btn-secondary btn-sm">Update</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ORD004</td>
+                                    <td>Neha Gupta</td>
+                                    <td>1</td>
+                                    <td>₹50</td>
+                                    <td><span class="badge" style="background-color: rgba(100, 116, 139, 0.1); color: var(--gray); padding: 4px 12px; border-radius: 20px; font-weight: 500;">Completed</span></td>
+                                    <td>
+                                        <div class="action-btns">
+                                            <button class="btn btn-primary btn-sm">View</button>
+                                            <button class="btn btn-secondary btn-sm">Update</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Menu Management Tab -->
+                <div class="tab-content" id="menu-tab">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600;">Menu Items</h2>
+                        <button class="btn btn-primary">Add New Item</button>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Item Name</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Veg Sandwich</td>
+                                    <td>Snacks</td>
+                                    <td>₹40</td>
+                                    <td>25</td>
+                                    <td><span class="badge" style="background-color: rgba(16, 185, 129, 0.1); color: var(--success); padding: 4px 12px; border-radius: 20px; font-weight: 500;">Available</span></td>
+                                    <td>
+                                        <div class="action-btns">
+                                            <button class="btn btn-primary btn-sm">Edit</button>
+                                            <button class="btn btn-danger btn-sm">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Chicken Burger</td>
+                                    <td>Lunch</td>
+                                    <td>₹80</td>
+                                    <td>15</td>
+                                    <td><span class="badge" style="background-color: rgba(16, 185, 129, 0.1); color: var(--success); padding: 4px 12px; border-radius: 20px; font-weight: 500;">Available</span></td>
+                                    <td>
+                                        <div class="action-btns">
+                                            <button class="btn btn-primary btn-sm">Edit</button>
+                                            <button class="btn btn-danger btn-sm">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Masala Dosa</td>
+                                    <td>Breakfast</td>
+                                    <td>₹50</td>
+                                    <td>30</td>
+                                    <td><span class="badge" style="background-color: rgba(16, 185, 129, 0.1); color: var(--success); padding: 4px 12px; border-radius: 20px; font-weight: 500;">Available</span></td>
+                                    <td>
+                                        <div class="action-btns">
+                                            <button class="btn btn-primary btn-sm">Edit</button>
+                                            <button class="btn btn-danger btn-sm">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Cold Coffee</td>
+                                    <td>Beverages</td>
+                                    <td>₹60</td>
+                                    <td>5</td>
+                                    <td><span class="badge" style="background-color: rgba(245, 158, 11, 0.1); color: var(--warning); padding: 4px 12px; border-radius: 20px; font-weight: 500;">Low Stock</span></td>
+                                    <td>
+                                        <div class="action-btns">
+                                            <button class="btn btn-primary btn-sm">Edit</button>
+                                            <button class="btn btn-danger btn-sm">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Stock Management Tab -->
+                <div class="tab-content" id="stock-tab">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600;">Stock Inventory</h2>
+                        <button class="btn btn-primary">Update Stock</button>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Item Name</th>
+                                    <th>Current Stock</th>
+                                    <th>Min. Required</th>
+                                    <th>Status</th>
+                                    <th>Last Updated</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Veg Sandwich</td>
+                                    <td>25</td>
+                                    <td>10</td>
+                                    <td><span class="badge" style="background-color: rgba(16, 185, 129, 0.1); color: var(--success); padding: 4px 12px; border-radius: 20px; font-weight: 500;">In Stock</span></td>
+                                    <td>Today, 10:30 AM</td>
+                                    <td>
+                                        <div class="action-btns">
+                                            <button class="btn btn-primary btn-sm">Update</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Chicken Burger</td>
+                                    <td>15</td>
+                                    <td>10</td>
+                                    <td><span class="badge" style="background-color: rgba(16, 185, 129, 0.1); color: var(--success); padding: 4px 12px; border-radius: 20px; font-weight: 500;">In Stock</span></td>
+                                    <td>Today, 9:45 AM</td>
+                                    <td>
+                                        <div class="action-btns">
+                                            <button class="btn btn-primary btn-sm">Update</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Masala Dosa</td>
+                                    <td>30</td>
+                                    <td>15</td>
+                                    <td><span class="badge" style="background-color: rgba(16, 185, 129, 0.1); color: var(--success); padding: 4px 12px; border-radius: 20px; font-weight: 500;">In Stock</span></td>
+                                    <td>Yesterday, 5:30 PM</td>
+                                    <td>
+                                        <div class="action-btns">
+                                            <button class="btn btn-primary btn-sm">Update</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Cold Coffee</td>
+                                    <td>5</td>
+                                    <td>10</td>
+                                    <td><span class="badge" style="background-color: rgba(239, 68, 68, 0.1); color: var(--danger); padding: 4px 12px; border-radius: 20px; font-weight: 500;">Low Stock</span></td>
+                                    <td>Today, 11:15 AM</td>
+                                    <td>
+                                        <div class="action-btns">
+                                            <button class="btn btn-primary btn-sm">Update</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Analytics Tab -->
+                <div class="tab-content" id="analytics-tab">
+                    <div class="analytics-grid">
+                        <div class="analytics-card">
+                            <h3>Popular Items</h3>
+                            <div class="popular-items">
+                                <div class="popular-item">
+                                    <div class="popular-item-info">
+                                        <div class="popular-item-rank">1</div>
+                                        <div class="popular-item-name">Veg Sandwich</div>
+                                    </div>
+                                    <div class="popular-item-count">45 orders</div>
+                                </div>
+                                <div class="popular-item">
+                                    <div class="popular-item-info">
+                                        <div class="popular-item-rank">2</div>
+                                        <div class="popular-item-name">Chicken Burger</div>
+                                    </div>
+                                    <div class="popular-item-count">38 orders</div>
+                                </div>
+                                <div class="popular-item">
+                                    <div class="popular-item-info">
+                                        <div class="popular-item-rank">3</div>
+                                        <div class="popular-item-name">Cold Coffee</div>
+                                    </div>
+                                    <div class="popular-item-count">32 orders</div>
+                                </div>
+                                <div class="popular-item">
+                                    <div class="popular-item-info">
+                                        <div class="popular-item-rank">4</div>
+                                        <div class="popular-item-name">Masala Dosa</div>
+                                    </div>
+                                    <div class="popular-item-count">28 orders</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="analytics-card">
+                            <h3>Peak Hours</h3>
+                            <div class="peak-hours">
+                                <div class="peak-hour">
+                                    <div class="peak-hour-time">12-1 PM</div>
+                                    <div class="peak-hour-bar">
+                                        <div class="peak-hour-fill" style="--bar-height: 90%;"></div>
+                                    </div>
+                                    <div class="peak-hour-count">42</div>
+                                </div>
+                                <div class="peak-hour">
+                                    <div class="peak-hour-time">1-2 PM</div>
+                                    <div class="peak-hour-bar">
+                                        <div class="peak-hour-fill" style="--bar-height: 75%;"></div>
+                                    </div>
+                                    <div class="peak-hour-count">35</div>
+                                </div>
+                                <div class="peak-hour">
+                                    <div class="peak-hour-time">2-3 PM</div>
+                                    <div class="peak-hour-bar">
+                                        <div class="peak-hour-fill" style="--bar-height: 60%;"></div>
+                                    </div>
+                                    <div class="peak-hour-count">28</div>
+                                </div>
+                                <div class="peak-hour">
+                                    <div class="peak-hour-time">11-12 PM</div>
+                                    <div class="peak-hour-bar">
+                                        <div class="peak-hour-fill" style="--bar-height: 45%;"></div>
+                                    </div>
+                                    <div class="peak-hour-count">21</div>
+                                </div>
+                                <div class="peak-hour">
+                                    <div class="peak-hour-time">3-4 PM</div>
+                                    <div class="peak-hour-bar">
+                                        <div class="peak-hour-fill" style="--bar-height: 30%;"></div>
+                                    </div>
+                                    <div class="peak-hour-count">15</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3>Weekly Sales</h3>
+                        <div class="chart">
+                            <div class="chart-bar" style="--bar-height: 70%;"></div>
+                            <div class="chart-bar" style="--bar-height: 85%;"></div>
+                            <div class="chart-bar" style="--bar-height: 60%;"></div>
+                            <div class="chart-bar" style="--bar-height: 90%;"></div>
+                            <div class="chart-bar" style="--bar-height: 75%;"></div>
+                            <div class="chart-bar" style="--bar-height: 65%;"></div>
+                            <div class="chart-bar" style="--bar-height: 80%;"></div>
+                        </div>
+                        <div class="chart-labels">
+                            <div class="chart-label">Mon</div>
+                            <div class="chart-label">Tue</div>
+                            <div class="chart-label">Wed</div>
+                            <div class="chart-label">Thu</div>
+                            <div class="chart-label">Fri</div>
+                            <div class="chart-label">Sat</div>
+                            <div class="chart-label">Sun</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Smart Canteen</h3>
+                    <p>Revolutionizing the canteen experience at Trinity College of Engineering and Research, Pune.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="menu.html">Menu</a></li>
+                        <li><a href="preorder.html">Pre-Order</a></li>
+                        <li><a href="status.html">Order Status</a></li>
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="signup.html">Sign Up</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Trinity College, Pune</li>
+                        <li><i class="fas fa-phone"></i> +91 98765 43210</li>
+                        <li><i class="fas fa-envelope"></i> canteen@trinitycollege.edu</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Developers</h3>
+                    <ul>
+                        <li>Pranav Raut</li>
+                        <li>Samarth Gole</li>
+                        <li>Anish Sonawane</li>
+                        <li>Srushti Urmode</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2025 Smart Canteen. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const navMenu = document.getElementById('nav-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            const icon = mobileMenuBtn.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+        
+        // Tab functionality
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all tabs and contents
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                btn.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = btn.getAttribute('data-tab');
+                document.getElementById(`${tabId}-tab`).classList.add('active');
+            });
+        });
+        
+        // Add scroll effect to header
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+            }
+        });
+    </script>
+</body>
+</html>
